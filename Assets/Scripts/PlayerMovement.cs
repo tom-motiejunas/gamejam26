@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5.0f;
@@ -9,15 +10,22 @@ public class PlayerMovement : MonoBehaviour
     private bool _isMoving;
     private Vector2 _currentInput;
     private Vector2 _bufferedInput;
+    private Rigidbody2D _rb;
 
     void Start()
     {
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.bodyType = RigidbodyType2D.Kinematic; // Ensure Kinematic
         _targetPosition = transform.position;
     }
 
     void Update()
     {
         HandleInput();
+    }
+
+    void FixedUpdate()
+    {
         Move();
     }
 
@@ -34,13 +42,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isMoving)
         {
-            // Move towards target
-            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, speed * Time.deltaTime);
+            // Move towards target using Rigidbody
+            Vector3 newPos = Vector3.MoveTowards(transform.position, _targetPosition, speed * Time.fixedDeltaTime);
+            _rb.MovePosition(newPos);
 
             // Reached target?
             if (Vector3.Distance(transform.position, _targetPosition) < 0.001f)
             {
-                transform.position = _targetPosition;
+                _rb.MovePosition(_targetPosition);
                 _isMoving = false;
             }
         }
@@ -53,8 +62,7 @@ public class PlayerMovement : MonoBehaviour
                 _bufferedInput = Vector2.zero; // Clear buffer
                 StartMove(_currentInput);
             }
-            // Continue current direction if key is held (optional, or just keep moving if pacman style)
-            // Pacman keeps moving until it hits a wall.
+            // Continue current direction if key is held
             else if (_currentInput != Vector2.zero && CanMove(_currentInput))
             {
                 StartMove(_currentInput);
