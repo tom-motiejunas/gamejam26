@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 325fdfabe8b88fa498624c9427e78419
+guid: afa2696a2b4cbe540a4ac9a8e8fcbfc4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ui-symbols_0
+      name: ui-symbols 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac1e4b44b7bfcdb4aa86cc9910498ec3
-      internalID: 858878466
+      spriteID: 1768d5f0c4c6c1348abb6d5504262739
+      internalID: -683880367
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui-symbols_1
+      name: ui-symbols 1_1
       rect:
         serializedVersion: 2
         x: 32
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ba2e385cf2c46a4784d13bd4abf89a7
-      internalID: 1725515905
+      spriteID: 836eb5e609987e74a9cbe62c2c358bc9
+      internalID: -2044530104
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui-symbols_2
+      name: ui-symbols 1_2
       rect:
         serializedVersion: 2
         x: 64
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8ece3138793bf941a01cb4ad06d82b2
-      internalID: 1345740491
+      spriteID: 18c588dab43eb2543a7fdfb3df525444
+      internalID: 1304494132
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui-symbols_3
+      name: ui-symbols 1_3
       rect:
         serializedVersion: 2
         x: 96
@@ -174,8 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 27d5111455e9ba84bb77711da6b555a9
-      internalID: -1864833182
+      spriteID: e253ad1f5572f6f478c84d2563ed4441
+      internalID: 1259671190
       vertices: []
       indices: 
       edges: []
@@ -191,10 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ui-symbols_0: 858878466
-      ui-symbols_1: 1725515905
-      ui-symbols_2: 1345740491
-      ui-symbols_3: -1864833182
+      ui-symbols 1_0: -683880367
+      ui-symbols 1_1: -2044530104
+      ui-symbols 1_2: 1304494132
+      ui-symbols 1_3: 1259671190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
