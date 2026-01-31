@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -9,6 +10,8 @@ public class GhostController : MonoBehaviour
     public LayerMask obstacleLayer;
     public Transform player;
     public Faction faction;
+    public Tilemap tilemap;
+    private Vector3? _wanderTarget;
 
     [Header("Animations")]
     public Sprite spriteUp;
@@ -33,6 +36,7 @@ public class GhostController : MonoBehaviour
         _targetPosition = transform.position;
         
         _currentDirection = GetRandomValidDirection();
+        if (tilemap == null) tilemap = FindObjectOfType<Tilemap>();
         
         // Initialize sprite based on faction (Fallback/Default)
         if (GameController.Instance != null && GameController.Instance.factionGhostSprites.Length > (int)faction)
@@ -148,8 +152,44 @@ public class GhostController : MonoBehaviour
         SetDirectionTowards(target);
     }
 
-    // Bee: Random Wander
+    // Bee: Random Wander (Long Distance)
     void MoveInternal_Random()
+    {
+        if (tilemap == null)
+        {
+            MoveInternal_RandomLocal();
+            return;
+        }
+
+        if (_wanderTarget.HasValue)
+        {
+            if (Vector3.Distance(transform.position, _wanderTarget.Value) < 0.5f)
+            {
+                _wanderTarget = null;
+            }
+        }
+
+        if (!_wanderTarget.HasValue)
+        {
+            _wanderTarget = GetRandomMapPosition();
+        }
+
+        if (!_wanderTarget.HasValue)
+        {
+            MoveInternal_RandomLocal();
+            return;
+        }
+
+        SetDirectionTowards(_wanderTarget.Value);
+
+        if (_currentDirection == Vector2.zero)
+        {
+            _wanderTarget = null;
+            MoveInternal_RandomLocal();
+        }
+    }
+
+    void MoveInternal_RandomLocal()
     {
         var validMoves = GetAvailableMoves();
         if (validMoves.Count > 0)
@@ -178,6 +218,31 @@ public class GhostController : MonoBehaviour
              else
                  _currentDirection = Vector2.zero;
         }
+    }
+
+    Vector3? GetRandomMapPosition()
+    {
+        if (tilemap == null) return null;
+        BoundsInt bounds = tilemap.cellBounds;
+        int maxAttempts = 10;
+        
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            int x = Random.Range(bounds.xMin, bounds.xMax);
+            int y = Random.Range(bounds.yMin, bounds.yMax);
+            Vector3Int cellPos = new Vector3Int(x, y, 0);
+
+            if (!tilemap.HasTile(cellPos)) continue;
+            
+            Vector3 worldPos = tilemap.GetCellCenterWorld(cellPos);
+            
+            Collider2D hit = Physics2D.OverlapCircle(worldPos, 0.1f, obstacleLayer);
+            if (hit == null)
+            {
+                return worldPos;
+            }
+        }
+        return null;
     }
 
     // Pentagram: Stalk (Chase if far, Flee/Random if close)

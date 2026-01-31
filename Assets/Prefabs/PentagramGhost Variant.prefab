@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6674608319719542176, guid: 79d41c5a8eff8134b9145c4d8796a6d6, type: 3}
       propertyPath: speed
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6674608319719542176, guid: 79d41c5a8eff8134b9145c4d8796a6d6, type: 3}
       propertyPath: faction
