@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/title_screen.unity
     guid: 17a5a48b09274964a9b0ea00d536f1d1
   - enabled: 1
-    path: Assets/Scenes/game_over.unity
+    path: Assets/Scenes/game_over_scene.unity
     guid: c9d64e22cb44d784b98370bff5f70970
   - enabled: 1
-    path: Assets/Scenes/you_win.unity
+    path: Assets/Scenes/you_win_scene.unity
     guid: 3dbd06c89a9dc854cb34fbdf189cace0
   - enabled: 1
-    path: Assets/Scenes/tomas_scene.unity
-    guid: d9773e51f35a10049abeba2441146383
+    path: Assets/Scenes/domas_scene.unity
+    guid: c5c102a6955fb8d4fb6e09768cb59397
   m_configObjects: {}

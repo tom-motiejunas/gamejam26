@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class DrawingManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class DrawingManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Components")]
     public RawImage drawingArea;
@@ -15,6 +15,10 @@ public class DrawingManager : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     public Color drawColor = Color.white;
     public Color backgroundColor = Color.clear;
     public int brushRadius = 6; // Increased from 2 to ensure visibility when downsampled
+    
+    [Header("Cursor Settings")]
+    public Texture2D cursorTexture;
+    public Vector2 cursorHotspot = new Vector2(16, 16); // Center of a 32x32 cursor roughly
 
     private Texture2D _drawingTexture;
     private RectTransform _rectTransform;
@@ -54,6 +58,19 @@ public class DrawingManager : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     public void OnPointerUp(PointerEventData eventData)
     {
         GameController.Instance.CheckDrawing(GetTexture());
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (cursorTexture != null)
+        {
+            Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     void DrawPoint(Vector2 screenPos)
