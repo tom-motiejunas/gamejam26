@@ -75,53 +75,147 @@ public class GhostController : MonoBehaviour
 
     void ChooseNextDirection()
     {
-        Vector2[] allDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
-        System.Collections.Generic.List<Vector2> validMoves = new System.Collections.Generic.List<Vector2>();
-
-        foreach (var dir in allDirections)
+        if (player == null)
         {
-            if (CanMove(dir))
-            {
-                if (dir != -_currentDirection) validMoves.Add(dir);
-            }
+            MoveInternal_Random();
+            return;
         }
 
-        if (validMoves.Count == 0 && CanMove(-_currentDirection))
+        // Check disguise interaction: If player has matching disguise, ghost just wanders
+        if (GameController.Instance != null && GameController.Instance.currentDisguise == this.faction)
         {
-            validMoves.Add(-_currentDirection);
+            MoveInternal_Random();
+            return;
         }
 
+        switch (faction)
+        {
+            case Faction.Infinity:
+                MoveInternal_Chase();
+                break;
+            case Faction.Knot:
+                MoveInternal_Ambush();
+                break;
+            case Faction.Bee:
+                MoveInternal_Random();
+                break;
+            case Faction.Pentagram:
+                MoveInternal_Stalk();
+                break;
+            default:
+                MoveInternal_Random();
+                break;
+        }
+    }
+
+    // --- Behavior Implementations ---
+
+    // Infinity: Direct Chase
+    void MoveInternal_Chase()
+    {
+        SetDirectionTowards(player.position);
+    }
+
+    // Knot: Ambush (Target 4 tiles ahead of player)
+    void MoveInternal_Ambush()
+    {
+        Vector3 target = player.position;
+        PlayerMovement pm = player.GetComponent<PlayerMovement>();
+        if (pm != null)
+        {
+            target += (Vector3)pm.CurrentDirection * 4.0f;
+        }
+        SetDirectionTowards(target);
+    }
+
+    // Bee: Random Wander
+    void MoveInternal_Random()
+    {
+        var validMoves = GetAvailableMoves();
         if (validMoves.Count > 0)
         {
-            if (player != null)
+            // Prefer not to reverse if possible, unless dead end
+            var forwardMoves = new System.Collections.Generic.List<Vector2>();
+            foreach(var dir in validMoves)
             {
-                Vector2 bestDir = validMoves[0];
-                float minDistance = float.MaxValue;
+                if (dir != -_currentDirection) forwardMoves.Add(dir);
+            }
 
-                foreach (var dir in validMoves)
-                {
-                    Vector3 nextTilePos = transform.position + (Vector3)dir;
-                    float dist = Vector3.Distance(nextTilePos, player.position);
-                    if (dist < minDistance)
-                    {
-                        minDistance = dist;
-                        bestDir = dir;
-                    }
-                }
-                _currentDirection = bestDir;
+            if (forwardMoves.Count > 0)
+            {
+                _currentDirection = forwardMoves[Random.Range(0, forwardMoves.Count)];
             }
             else
             {
-                _currentDirection = validMoves[Random.Range(0, validMoves.Count)];
+                 _currentDirection = validMoves[Random.Range(0, validMoves.Count)];
             }
         }
         else
         {
-            _currentDirection = Vector2.zero;
+            // If completely stuck (shouldn't happen with checking reverse), try reverse
+             if (CanMove(-_currentDirection))
+                 _currentDirection = -_currentDirection;
+             else
+                 _currentDirection = Vector2.zero;
         }
     }
 
-    Vector2 GetRandomValidDirection()
+    // Pentagram: Stalk (Chase if far, Flee/Random if close)
+    void MoveInternal_Stalk()
+    {
+        float dist = Vector3.Distance(transform.position, player.position);
+        if (dist > 5.0f)
+        {
+            // Far away: Chase
+            SetDirectionTowards(player.position);
+        }
+        else
+        {
+            // Close: Act erratically (Random for now)
+            MoveInternal_Random();
+        }
+    }
+
+    // --- Helper Methods ---
+
+    void SetDirectionTowards(Vector3 targetPos)
+    {
+        var validMoves = GetAvailableMoves();
+        // Filter out direct reverse moves unless it's the only option
+        var forwardMoves = new System.Collections.Generic.List<Vector2>();
+        foreach(var m in validMoves)
+        {
+            if(m != -_currentDirection) forwardMoves.Add(m);
+        }
+
+        if (forwardMoves.Count == 0)
+        {
+            // Dead end, must turn back
+            if (validMoves.Contains(-_currentDirection))
+                _currentDirection = -_currentDirection;
+            else
+                _currentDirection = Vector2.zero;
+            return;
+        }
+
+        // Pick best forward move
+        Vector2 bestDir = forwardMoves[0];
+        float minDistance = float.MaxValue;
+
+        foreach (var dir in forwardMoves)
+        {
+            Vector3 nextTilePos = transform.position + (Vector3)dir;
+            float d = Vector3.Distance(nextTilePos, targetPos);
+            if (d < minDistance)
+            {
+                minDistance = d;
+                bestDir = dir;
+            }
+        }
+        _currentDirection = bestDir;
+    }
+
+    System.Collections.Generic.List<Vector2> GetAvailableMoves()
     {
         Vector2[] allDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
         System.Collections.Generic.List<Vector2> validMoves = new System.Collections.Generic.List<Vector2>();
@@ -130,7 +224,12 @@ public class GhostController : MonoBehaviour
         {
             if (CanMove(dir)) validMoves.Add(dir);
         }
+        return validMoves;
+    }
 
+    Vector2 GetRandomValidDirection()
+    {
+        var validMoves = GetAvailableMoves();
         if (validMoves.Count > 0)
         {
             return validMoves[Random.Range(0, validMoves.Count)];

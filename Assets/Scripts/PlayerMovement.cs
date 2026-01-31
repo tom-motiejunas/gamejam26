@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public Sprite spriteLeft;
     public Sprite spriteRight;
 
+    public Vector2 CurrentDirection => _currentInput;
+
     private Vector3 _targetPosition;
     private bool _isMoving;
     private Vector2 _currentInput;
