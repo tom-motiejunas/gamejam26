@@ -25,12 +25,12 @@ public class GhostController : MonoBehaviour
         _currentDirection = GetRandomValidDirection();
         
         // Initialize sprite based on faction
-        if (GameController.Instance != null && GameController.Instance.factionSprites.Length > (int)faction)
+        if (GameController.Instance != null && GameController.Instance.factionGhostSprites.Length > (int)faction)
         {
             var sr = GetComponent<SpriteRenderer>();
             if (sr != null)
             {
-                sr.sprite = GameController.Instance.factionSprites[(int)faction];
+                sr.sprite = GameController.Instance.factionGhostSprites[(int)faction];
             }
         }
     }

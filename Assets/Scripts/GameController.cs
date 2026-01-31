@@ -14,7 +14,9 @@ public class GameController : MonoBehaviour
     [Header("Faction UI")]
     public Image symbolDisplay; // The main UI box on the left
     [Tooltip("Order: Infinity, Knot, Bee, Pentagram")]
-    public Sprite[] factionSprites; 
+    public Sprite[] factionGhostSprites; 
+    [Tooltip("Order: Infinity, Knot, Bee, Pentagram")]
+    public Sprite[] factionDisguiseDisplaySprites; 
     public Faction currentDisguise;
 
     private int totalCoins = 0;
@@ -60,9 +62,9 @@ public class GameController : MonoBehaviour
 
     void UpdateSymbolDisplay()
     {
-        if (symbolDisplay != null && factionSprites != null && factionSprites.Length > (int)currentDisguise)
+        if (symbolDisplay != null && factionDisguiseDisplaySprites != null && factionDisguiseDisplaySprites.Length > (int)currentDisguise)
         {
-            symbolDisplay.sprite = factionSprites[(int)currentDisguise];
+            symbolDisplay.sprite = factionDisguiseDisplaySprites[(int)currentDisguise];
         }
     }
 
@@ -87,7 +89,7 @@ public class GameController : MonoBehaviour
     {
         if (coinText != null)
         {
-            coinText.text = "Coins Left: " + (totalCoins - collectedCoins);
+            coinText.text = (totalCoins - collectedCoins).ToString("000");
         }
     }
 
