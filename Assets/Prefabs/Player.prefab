@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5574709936775114991}
   - component: {fileID: 6693559465617477435}
   - component: {fileID: 1163798518991764277}
+  - component: {fileID: 1416988597661236012}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1883748654, guid: b372599233c28914c9dd1768dbf120ca, type: 3}
+  m_Sprite: {fileID: -1031164337, guid: bf5fe9111fc40a443b86fac21f63074d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,6 +103,10 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  spriteUp: {fileID: 1669441674, guid: bf5fe9111fc40a443b86fac21f63074d, type: 3}
+  spriteDown: {fileID: -1031164337, guid: bf5fe9111fc40a443b86fac21f63074d, type: 3}
+  spriteLeft: {fileID: 342934506, guid: bf5fe9111fc40a443b86fac21f63074d, type: 3}
+  spriteRight: {fileID: -1948550234, guid: bf5fe9111fc40a443b86fac21f63074d, type: 3}
 --- !u!61 &1163798518991764277
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,3 +152,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &1416988597661236012
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4927227902120819075}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
