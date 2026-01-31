@@ -63,7 +63,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void OnStartGameClicked() 
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("domas_scene");
     }
     public void OnExitGameClicked()
     {

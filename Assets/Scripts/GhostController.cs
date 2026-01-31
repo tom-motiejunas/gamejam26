@@ -22,6 +22,8 @@ public class GhostController : MonoBehaviour
     private Rigidbody2D _rb;
     private SpriteRenderer _spriteRenderer;
 
+    public string gameOverScene = "game_over_scene";
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -273,7 +275,7 @@ public class GhostController : MonoBehaviour
             }
 
             Debug.Log("Player Caught!");
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(gameOverScene);
             //TODO: kill player
         }
     }

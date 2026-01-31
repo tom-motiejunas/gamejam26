@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
 
     public TextMeshProUGUI coinText;
     public Image coinIcon; // Reference to a UI Image (Sprite)
-    public GameObject winPanel;
+    public string youWinScene = "you_win_scene";
 
     [Header("Faction UI")]
     public Image symbolDisplay; // The main UI box on the left
@@ -38,7 +38,6 @@ public class GameController : MonoBehaviour
     {
         UpdateUI();
         SetDisguise(Faction.Infinity); // Default
-        if (winPanel != null) winPanel.SetActive(false);
     }
 
     void Update()
@@ -95,10 +94,7 @@ public class GameController : MonoBehaviour
 
     void WinGame()
     {
-        if (winPanel != null)
-        {
-            winPanel.SetActive(true);
-        }
+        SceneManager.LoadScene(youWinScene);
         Debug.Log("You Win!");
     }
 
