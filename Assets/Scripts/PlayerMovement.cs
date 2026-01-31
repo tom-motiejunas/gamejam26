@@ -6,16 +6,24 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5.0f;
     public LayerMask obstacleLayer;
 
+    [Header("Sprites")]
+    public Sprite spriteUp;
+    public Sprite spriteDown;
+    public Sprite spriteLeft;
+    public Sprite spriteRight;
+
     private Vector3 _targetPosition;
     private bool _isMoving;
     private Vector2 _currentInput;
     private Vector2 _bufferedInput;
     private Rigidbody2D _rb;
+    private SpriteRenderer _spriteRenderer;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _rb.bodyType = RigidbodyType2D.Kinematic; // Ensure Kinematic
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _targetPosition = transform.position;
     }
 
@@ -32,10 +40,26 @@ public class PlayerMovement : MonoBehaviour
     void HandleInput()
     {
         // Simple 4-direction input
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) _bufferedInput = Vector2.up;
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) _bufferedInput = Vector2.down;
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) _bufferedInput = Vector2.left;
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _bufferedInput = Vector2.right;
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            _bufferedInput = Vector2.up;
+            if(spriteUp != null) _spriteRenderer.sprite = spriteUp;
+        }
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            _bufferedInput = Vector2.down;
+            if(spriteDown != null) _spriteRenderer.sprite = spriteDown;
+        }
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            _bufferedInput = Vector2.left;
+            if(spriteLeft != null) _spriteRenderer.sprite = spriteLeft;
+        }
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            _bufferedInput = Vector2.right;
+            if(spriteRight != null) _spriteRenderer.sprite = spriteRight;
+        }
     }
 
     void Move()
