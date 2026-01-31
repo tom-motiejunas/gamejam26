@@ -8,6 +8,7 @@ public class GhostController : MonoBehaviour
     public float speed = 4.0f;
     public LayerMask obstacleLayer;
     public Transform player;
+    public Faction faction;
 
     private Vector3 _targetPosition;
     private bool _isMoving;
@@ -22,6 +23,16 @@ public class GhostController : MonoBehaviour
         _targetPosition = transform.position;
         
         _currentDirection = GetRandomValidDirection();
+        
+        // Initialize sprite based on faction
+        if (GameController.Instance != null && GameController.Instance.factionSprites.Length > (int)faction)
+        {
+            var sr = GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sprite = GameController.Instance.factionSprites[(int)faction];
+            }
+        }
     }
 
     void FixedUpdate()
@@ -138,6 +149,12 @@ public class GhostController : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.GetComponent<PlayerMovement>())
         {
+            if (GameController.Instance.currentDisguise == this.faction)
+            {
+                Debug.Log("Safe passage granted: Disguise matches faction.");
+                return;
+            }
+
             Debug.Log("Player Caught!");
             // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             //TODO: kill player

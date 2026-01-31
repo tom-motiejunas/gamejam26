@@ -11,10 +11,11 @@ public class GameController : MonoBehaviour
     public Image coinIcon; // Reference to a UI Image (Sprite)
     public GameObject winPanel;
 
-    [Header("Symbol UI")]
+    [Header("Faction UI")]
     public Image symbolDisplay; // The main UI box on the left
-    public Sprite[] symbolSprites; // Drag your sliced ui-symbols here
-    private int _currentSymbolIndex = 0;
+    [Tooltip("Order: Infinity, Knot, Bee, Pentagram")]
+    public Sprite[] factionSprites; 
+    public Faction currentDisguise;
 
     private int totalCoins = 0;
     private int collectedCoins = 0;
@@ -34,31 +35,34 @@ public class GameController : MonoBehaviour
     void Start()
     {
         UpdateUI();
-        UpdateSymbolDisplay();
+        SetDisguise(Faction.Infinity); // Default
         if (winPanel != null) winPanel.SetActive(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            CycleSymbol();
-        }
+        HandleInput();
     }
 
-    void CycleSymbol()
+    void HandleInput()
     {
-        if (symbolSprites == null || symbolSprites.Length == 0) return;
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) SetDisguise(Faction.Infinity);
+        if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) SetDisguise(Faction.Knot);
+        if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) SetDisguise(Faction.Bee);
+        if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4)) SetDisguise(Faction.Pentagram);
+    }
 
-        _currentSymbolIndex = (_currentSymbolIndex + 1) % symbolSprites.Length;
+    public void SetDisguise(Faction faction)
+    {
+        currentDisguise = faction;
         UpdateSymbolDisplay();
     }
 
     void UpdateSymbolDisplay()
     {
-        if (symbolDisplay != null && symbolSprites != null && symbolSprites.Length > 0)
+        if (symbolDisplay != null && factionSprites != null && factionSprites.Length > (int)currentDisguise)
         {
-            symbolDisplay.sprite = symbolSprites[_currentSymbolIndex];
+            symbolDisplay.sprite = factionSprites[(int)currentDisguise];
         }
     }
 
