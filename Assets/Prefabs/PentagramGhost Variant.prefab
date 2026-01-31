@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: spriteRight
       value: 
       objectReference: {fileID: 248857949, guid: 5d58d3890ef15c246928bb8c3a611f98, type: 3}
+    - target: {fileID: 9041056488456198660, guid: 79d41c5a8eff8134b9145c4d8796a6d6, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
