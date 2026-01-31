@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class MainMenuUI : MonoBehaviour
     private float currentRefreshRate;
     private int currentResolutionIndex = 0;
     [SerializeField] private Scene startingScene;
+
+    [Header("Volume Settings")]
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider sfxSlider;
 
     void Start()
     {
@@ -47,6 +53,11 @@ public class MainMenuUI : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+
+        // Initialize Volume Sliders from PlayerPrefs
+        if (masterSlider != null) masterSlider.value = PlayerPrefs.GetFloat("MasterVol", 0.75f);
+        if (musicSlider != null) musicSlider.value = PlayerPrefs.GetFloat("MusicVol", 0.75f);
+        if (sfxSlider != null) sfxSlider.value = PlayerPrefs.GetFloat("SFXVol", 0.75f);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -69,4 +80,21 @@ public class MainMenuUI : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void OnMasterVolumeChanged(float value)
+    {
+        if (AudioManager.Instance != null) AudioManager.Instance.SetMasterVolume(value);
+    }
+
+    public void OnMusicVolumeChanged(float value)
+    {
+        if (AudioManager.Instance != null) AudioManager.Instance.SetMusicVolume(value);
+    }
+
+    public void OnSFXVolumeChanged(float value)
+    {
+        if (AudioManager.Instance != null) AudioManager.Instance.SetSFXVolume(value);
+    }
 }
+
+
