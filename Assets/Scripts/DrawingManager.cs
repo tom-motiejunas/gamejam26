@@ -48,6 +48,7 @@ public class DrawingManager : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     {
         ClearCanvas(); 
         DrawPoint(eventData.position);
+        if (AudioManager.Instance != null) AudioManager.Instance.StartDrawing();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -58,6 +59,7 @@ public class DrawingManager : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     public void OnPointerUp(PointerEventData eventData)
     {
         GameController.Instance.CheckDrawing(GetTexture());
+        if (AudioManager.Instance != null) AudioManager.Instance.StopDrawing();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
