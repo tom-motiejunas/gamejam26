@@ -26,6 +26,23 @@ public class GhostController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     public string gameOverScene = "game_over_scene";
+    
+    // Static tracking of all ghosts
+    public static System.Collections.Generic.List<GhostController> allGhosts = new System.Collections.Generic.List<GhostController>();
+
+    public Vector3 MoveTarget => _targetPosition; // Expose movement target
+
+
+    void Awake()
+    {
+        allGhosts.Add(this);
+    }
+
+    void OnDestroy()
+    {
+        if (allGhosts.Contains(this))
+            allGhosts.Remove(this);
+    }
 
     void Start()
     {
@@ -325,8 +342,25 @@ public class GhostController : MonoBehaviour
     bool CanMove(Vector2 direction)
     {
         Vector2 checkPos = (Vector2)transform.position + direction;
+        
+        // 1. Check walls/obstacles
         Collider2D hit = Physics2D.OverlapCircle(checkPos, 0.1f, obstacleLayer);
-        return hit == null;
+        if (hit != null) return false;
+
+        // 2. Check other ghosts
+        // We check if any OTHER ghost is either at that position or moving towards it.
+        foreach (var ghost in allGhosts)
+        {
+            if (ghost == this) continue; // Don't check self
+
+            // Check if existing target of another ghost is close to where we want to go
+            if (Vector3.Distance(ghost.MoveTarget, checkPos) < 0.5f)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     void OnTriggerEnter2D(Collider2D other)
