@@ -101,4 +101,31 @@ public class GameController : MonoBehaviour
         }
         Debug.Log("You Win!");
     }
+
+    public void CheckDrawing(Texture2D drawnTexture)
+    {
+        // 0: Infinity, 1: Knot, 2: Bee, 3: Pentagram
+        // Faction enum: Infinity=0, Knot=1, Bee=2, Pentagram=3
+        // So the index matches the enum directly.
+        
+        int matchIndex = SymbolRecognizer.GetBestMatch(drawnTexture, factionDisguiseDisplaySprites);
+
+        if (matchIndex != -1)
+        {
+            SetDisguise((Faction)matchIndex);
+            Debug.Log($"Disguise set to: {(Faction)matchIndex}");
+        }
+        else
+        {
+            Debug.Log("Drawing not recognized.");
+            // Ideally we callback to DrawingManager to flash red
+            // Since we don't have a direct reference here yet, let's find it or use a singleton approach or event
+            // But better: Input the DrawingManager reference in inspector or FindObjects
+            DrawingManager dm = FindObjectOfType<DrawingManager>();
+            if (dm != null)
+            {
+                dm.FlashError();
+            }
+        }
+    }
 }
