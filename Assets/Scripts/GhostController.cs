@@ -10,27 +10,34 @@ public class GhostController : MonoBehaviour
     public Transform player;
     public Faction faction;
 
+    [Header("Animations")]
+    public Sprite spriteUp;
+    public Sprite spriteDown;
+    public Sprite spriteLeft;
+    public Sprite spriteRight;
+
     private Vector3 _targetPosition;
     private bool _isMoving;
     private Vector2 _currentDirection;
     private Rigidbody2D _rb;
+    private SpriteRenderer _spriteRenderer;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _rb.isKinematic = true; // Ensure it's kinematic
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         
         _targetPosition = transform.position;
         
         _currentDirection = GetRandomValidDirection();
         
-        // Initialize sprite based on faction
+        // Initialize sprite based on faction (Fallback/Default)
         if (GameController.Instance != null && GameController.Instance.factionGhostSprites.Length > (int)faction)
         {
-            var sr = GetComponent<SpriteRenderer>();
-            if (sr != null)
+            if (_spriteRenderer != null)
             {
-                sr.sprite = GameController.Instance.factionGhostSprites[(int)faction];
+                _spriteRenderer.sprite = GameController.Instance.factionGhostSprites[(int)faction];
             }
         }
     }
@@ -71,6 +78,17 @@ public class GhostController : MonoBehaviour
     {
         _targetPosition = transform.position + (Vector3)direction;
         _isMoving = true;
+        UpdateSprite(direction);
+    }
+
+    void UpdateSprite(Vector2 direction)
+    {
+        if (_spriteRenderer == null) return;
+
+        if (direction == Vector2.up && spriteUp != null) _spriteRenderer.sprite = spriteUp;
+        else if (direction == Vector2.down && spriteDown != null) _spriteRenderer.sprite = spriteDown;
+        else if (direction == Vector2.left && spriteLeft != null) _spriteRenderer.sprite = spriteLeft;
+        else if (direction == Vector2.right && spriteRight != null) _spriteRenderer.sprite = spriteRight;
     }
 
     void ChooseNextDirection()
