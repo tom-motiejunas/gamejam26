@@ -38,6 +38,11 @@ public class GameController : MonoBehaviour
     {
         UpdateUI();
         SetDisguise(Faction.Infinity); // Default
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.backgroundMusic);
+        }
     }
 
     void Update()
@@ -77,6 +82,11 @@ public class GameController : MonoBehaviour
     {
         collectedCoins++;
         UpdateUI();
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayCoin();
+        }
 
         if (collectedCoins >= totalCoins)
         {

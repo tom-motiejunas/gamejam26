@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 465614125503145046}
   - component: {fileID: 6845945504845935247}
+  - component: {fileID: 911409183011398184}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -45,4 +46,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 0}
-  winPanel: {fileID: 0}
+  coinIcon: {fileID: 0}
+  youWinScene: you_win_scene
+  symbolDisplay: {fileID: 0}
+  factionGhostSprites: []
+  factionDisguiseDisplaySprites: []
+  currentDisguise: 0
+--- !u!114 &911409183011398184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970783699959699019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 046de3338db08824d9881a1f0c7ed8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pausePanel: {fileID: 5428748185316172765, guid: 7ac33f26fc1ce874b928373f8d2c1988, type: 3}
+  mainMenuSceneName: title_screen
